@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="produtosApp">
+    <head>
+        <title>Desenvolvendo Aplicações Web com AngularJS e Java</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body ng-controller="ProdutosController">
+        <!--Cadastro-->
+        <h1>Cadastro</h1>
+        <form>
+            <div>
+                <label for="codigo">Código: </label>
+                <input id="codigo" name="codigo" type="text"/>
+            </div>
+
+            <div>
+                <label for="descricao">Descrição </label>
+                <input id="descricao" name="descricao" type="text"/>
+            </div>
+
+            <div>
+                <label for="preco">Preço: </label>
+                <input id="preco" name="preco" type="text"/>
+            </div>
+
+            <div>
+                <button> Salvar </button>
+            </div>
+        </form>
+
+        <!--Tabela de preços-->
+        <h1>Tabela de preços</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descrição</th>
+                    <th>Preços</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="produto in produtos track by $index">
+                    <td>{{produto.id}}</td> 
+                    <td>{{produto.descricao}}</td>
+                    <td>{{produto.preco}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+        <script src="js/angular.min.js"></script>
+        <script>
+                        var app = angular.module('produtosApp', []);
+
+                        app.controller('ProdutosController', function ($scope) {
+                            var produtos = [{
+                                    id: 1,
+                                    descricao: 'Arroz',
+                                    preco: 2.50
+                                }, {
+                                    id: 2,
+                                    descricao: 'Feijão',
+                                    preco: 3.50
+                                }];
+
+                            $scope.produtos = produtos;
+                        });
+        </script>
+    </body>
+</html>
