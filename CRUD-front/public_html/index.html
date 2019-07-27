@@ -11,21 +11,22 @@
         <form>
             <div>
                 <label for="codigo">Código: </label>
-                <input id="codigo" name="codigo" type="text"/>
+                <input id="codigo" name="codigo" type="text" ng-model="produto.id"/>
             </div>
 
             <div>
                 <label for="descricao">Descrição </label>
-                <input id="descricao" name="descricao" type="text"/>
+                <input id="descricao" name="descricao" type="text" ng-model="produto.descricao"/>
             </div>
 
             <div>
                 <label for="preco">Preço: </label>
-                <input id="preco" name="preco" type="text"/>
+                <input id="preco" name="preco" type="text" ng-model="produto.preco"/>
             </div>
 
             <div>
-                <button> Salvar </button>
+                <button ng-click="salvar(produto)"> Salvar </button>
+                <button ng-click="cancelar()"> Cancelar </button>
             </div>
         </form>
 
@@ -37,6 +38,8 @@
                     <th>Código</th>
                     <th>Descrição</th>
                     <th>Preços</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -44,27 +47,62 @@
                     <td>{{produto.id}}</td> 
                     <td>{{produto.descricao}}</td>
                     <td>{{produto.preco}}</td>
+                    <td><a href="" ng-click="editar(produto)">[Editar]</a></td>
+                    <td><a href="" ng-click="excluir(produto)">[Excluir]</a></td>
                 </tr>
             </tbody>
 
         </table>
         <script src="js/angular.min.js"></script>
         <script>
-                        var app = angular.module('produtosApp', []);
+                                var app = angular.module('produtosApp', []);
 
-                        app.controller('ProdutosController', function ($scope) {
-                            var produtos = [{
-                                    id: 1,
-                                    descricao: 'Arroz',
-                                    preco: 2.50
-                                }, {
-                                    id: 2,
-                                    descricao: 'Feijão',
-                                    preco: 3.50
-                                }];
+                                app.controller('ProdutosController', function ($scope) {
+                                    var produtos = [{
+                                            id: 1,
+                                            descricao: 'Arroz',
+                                            preco: 2.50
+                                        }, {
+                                            id: 2,
+                                            descricao: 'Feijão',
+                                            preco: 3.50
+                                        }];
 
-                            $scope.produtos = produtos;
-                        });
+                                    $scope.produto = {};
+                                    $scope.produtos = produtos;
+
+                                    $scope.salvar = function (produto) {
+                                        var produtoEncontrado = false;
+                                        for (var i = 0, length = produtos.length; i < length; i++) {
+                                            if (produtos[i].id == produto.id) {
+                                                produtos[i].descricao = produto.descricao;
+                                                produtos[i].preco = produto.preco;
+                                                produtoEncontrado = true;
+                                            }
+                                        }
+                                        if (!produtoEncontrado) {
+                                            produtos.push(produto);
+                                        }
+                                        $scope.produto = {};
+                                    };
+
+                                    $scope.editar = function (produto) {
+                                        $scope.produto = angular.copy(produto);
+                                    };
+
+                                    $scope.excluir = function (produto) {
+                                        for (var i = 0, length = produtos.length; i < length; i++) {
+                                            if (produtos[i].id == produto.id) {
+                                                produtos.splice(i, 1);
+                                            }
+                                        }
+                                    };
+
+                                    $scope.cancelar = function () {
+                                        $scope.produto = {};
+                                    };
+
+                                });
         </script>
     </body>
 </html>
