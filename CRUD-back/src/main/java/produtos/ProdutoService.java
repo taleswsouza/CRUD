@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,59 +24,36 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class ProdutoService {
 
-    static Integer contador;
-    List<Produto> produtos;
-
-    
-    @PostConstruct
-    public void init() {
-        this.produtos = new ArrayList<>();
-        contador = 1;
-    }
+    @PersistenceContext(unitName = "produtosPU")
+    private EntityManager entityManager;
 
     @GET
     public List<Produto> getProdutos() {
-        return produtos;
+        TypedQuery<Produto> query = entityManager.createQuery("SELECT p FROM Produto p", Produto.class);
+        return query.getResultList();
     }
 
     @POST
     public Produto adicionar(Produto produto) {
-        produto.setId(contador++);
-        produtos.add(produto);
+        entityManager.persist(produto);
         return produto;
     }
 
     @PUT
     @Path("{id}")
     public void atualizar(@PathParam("id") Integer id, Produto produto) {
-        for (Produto p : produtos) {
-            if (p.getId().equals(id)) {
-                p.setDescricao(produto.getDescricao());
-                p.setPreco(produto.getPreco());
-                break;
-            }
-        }
+        entityManager.merge(produto);
     }
 
     @DELETE
     @Path("{id}")
     public void excluir(@PathParam("id") Integer id) {
-        for (Produto p : produtos) {
-            if (p.getId().equals(id)) {
-                produtos.remove(p);
-                break;
-            }
-        }
+        entityManager.remove(getProduto(id));
     }
 
     @GET
     @Path("id")
     public Produto getProduto(@PathParam("id") Integer id) {
-        for(Produto p : produtos) {
-            if (p.getId().equals(id)) {
-                return p;
-            }
-        }
-        return null;
+        return entityManager.find(Produto.class, id);
     }
 }
