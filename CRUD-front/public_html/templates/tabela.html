@@ -1,0 +1,22 @@
+<h1>Tabela de preços</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>Preços</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="produto in produtos track by $index" ng-dblclick="editar(produto)">
+            <td>{{produto.id}}</td> 
+            <td>{{produto.descricao}}</td>
+            <td>{{produto.preco}}</td>
+            <td><a href="#!cadastro/{{produto.id}}">[Editar]</a></td>
+            <td><a href="" ng-click="excluir(produto)">[Excluir]</a></td>
+        </tr>
+    </tbody>
+
+</table>

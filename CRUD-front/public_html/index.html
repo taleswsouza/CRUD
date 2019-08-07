@@ -5,55 +5,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body ng-controller="ProdutosController">
-        <!--Cadastro-->
-        <h1>Cadastro</h1>
-        <form>
-            <div>
-                <label for="codigo">Código: </label>
-                <input id="codigo" name="codigo" type="text" ng-model="produto.id"/>
-            </div>
+    <body>
 
-            <div>
-                <label for="descricao">Descrição </label>
-                <input id="descricao" name="descricao" type="text" ng-model="produto.descricao"/>
-            </div>
+        <h1>Produtos</h1>
+        [ <a href="#!tabela">Tabela</a> | <a href="#!cadastro">Cadastro</a> ]
+        
+    <ng-view></ng-view>
 
-            <div>
-                <label for="preco">Preço: </label>
-                <input id="preco" name="preco" type="text" ng-model="produto.preco"/>
-            </div>
-
-            <div>
-                <button ng-click="salvar(produto)"> Salvar </button>
-                <button ng-click="cancelar()"> Cancelar </button>
-            </div>
-        </form>
-
-        <!--Tabela de preços-->
-        <h1>Tabela de preços</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Descrição</th>
-                    <th>Preços</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr data-ng-repeat="produto in produtos track by $index" ng-dblclick="editar(produto)">
-                    <td>{{produto.id}}</td> 
-                    <td>{{produto.descricao}}</td>
-                    <td>{{produto.preco}}</td>
-                    <td><a href="" ng-click="editar(produto)">[Editar]</a></td>
-                    <td><a href="" ng-click="excluir(produto)">[Excluir]</a></td>
-                </tr>
-            </tbody>
-
-        </table>
-        <script src="js/angular.min.js"></script>
-        <script src="js/app.js"></script>
-    </body>
+    <script src="js/angularjs/angular.min.js"></script>
+    <script src="js/angularjs/angular-route.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
 </html>

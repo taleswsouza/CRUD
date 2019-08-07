@@ -52,7 +52,7 @@ public class ProdutoService {
     }
 
     @GET
-    @Path("id")
+    @Path("{id}")
     public Produto getProduto(@PathParam("id") Integer id) {
         return entityManager.find(Produto.class, id);
     }

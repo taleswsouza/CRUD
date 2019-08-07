@@ -1,10 +1,22 @@
-var app = angular.module('produtosApp', []);
+var app = angular.module('produtosApp', ['ngRoute']);
 
-app.controller('ProdutosController', function ($scope, ProdutosService) {
+app.config(function ($routeProvider) {
 
+    $routeProvider.when('/cadastro', {
+        controller: 'CadastroProdutosController',
+        templateUrl: 'templates/cadastro.html'
+    }).when('/cadastro/:id', {
+        controller: 'CadastroProdutosController',
+        templateUrl: 'templates/cadastro.html'
+    }).when('/tabela', {
+        controller: 'TabelaProdutosController',
+        templateUrl: 'templates/tabela.html'
+    }).otherwise('/tabela');
 
-    $scope.produto = {};
+});
 
+app.controller('TabelaProdutosController', function ($scope, ProdutosService) {
+    
     listar();
 
     function listar() {
@@ -13,28 +25,52 @@ app.controller('ProdutosController', function ($scope, ProdutosService) {
         });
     }
 
-    $scope.salvar = function (produto) {
-        ProdutosService.salvar(produto).then(listar);
-        $scope.produto = {};
-    };
-
-    $scope.editar = function (produto) {
-        $scope.produto = angular.copy(produto);
-    };
-
     $scope.excluir = function (produto) {
         ProdutosService.excluir(produto).then(listar);
+    };
+});
+
+app.controller('CadastroProdutosController', function ($routeParams, $scope, $location, ProdutosService) {
+    
+    var id = $routeParams.id;
+    
+    if(id) {
+        ProdutosService.getProduto(id).then(function(resposta) {
+           $scope.produto = resposta.data; 
+        });
+    } else {
+        $scope.produto = {};
+    }
+    
+
+    function salvar(produto) {
+        $scope.produto = {};
+        return ProdutosService.salvar(produto);
+    };
+    
+    $scope.salvar = function (produto) {
+        salvar(produto).then(redirecionarTabela);
+    }; 
+
+    $scope.salvarCadastrarNovo = salvar; 
+
+    function redirecionarTabela() {
+        $location.path('/tabela');
     };
 
     $scope.cancelar = function () {
         $scope.produto = {};
+        redirecionarTabela();
     };
-
 });
 
 app.service('ProdutosService', function ($http) {
 
     var api = 'http://localhost:8080/CRUD-back/api/produtos';
+
+    this.getProduto = function (id) {
+        return $http.get(api + '/' + id);
+    };
 
     this.listar = function () {
         return $http.get(api);
