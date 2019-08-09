@@ -50,10 +50,14 @@ app.controller('CadastroProdutosController', function ($routeParams, $scope, $lo
     ;
 
     $scope.salvar = function (produto) {
+        $scope.cadastroProdutosForm.$setPristine();
         salvar(produto).then(redirecionarTabela);
     };
 
-    $scope.salvarCadastrarNovo = salvar;
+    $scope.salvarCadastrarNovo = function (produto) {
+        $scope.cadastroProdutosForm.$setPristine();
+        salvar(produto);
+    };
 
     function redirecionarTabela() {
         $location.path('/tabela');
