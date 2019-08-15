@@ -95,7 +95,7 @@ app.service('ProdutosService', function (ProdutosResource) {
 });
 
 app.factory('ProdutosResource', function ($resource) {
-    return $resource('http://localhost:8080/CRUD-back/api/produtos/:id', {}, {
+    return $resource('http://localhost:8080/api/produtos/:id', {}, {
         atualizar: {
             method: 'PUT'
         },
