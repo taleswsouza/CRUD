@@ -4,6 +4,7 @@ import com.taleswsouza.produtos.exceptions.ProdutoNotFoundException;
 import com.taleswsouza.produtos.model.Produto;
 import com.taleswsouza.produtos.repository.ProdutoRepository;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,13 +36,13 @@ public class ProdutoResource {
     }
 
     @PostMapping("/produtos")
-    public Produto adicionar(@RequestBody Produto produto) {
+    public Produto adicionar(@RequestBody  @Valid Produto produto) {
         produtoRepository.save(produto);
         return produto;
     }
 
     @PutMapping("/produtos/{id}")
-    public void atualizar(@PathVariable(value="id") Integer id, @RequestBody Produto produto) {
+    public void atualizar(@PathVariable(value="id") Integer id, @RequestBody @Valid Produto produto) {
         produtoRepository.save(produto);
     }
 
